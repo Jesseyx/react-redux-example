@@ -1,0 +1,94 @@
+{
+  "name": "react-redux-universal-hot-example",
+  "version": "0.9.0",
+  "description": "Example of an isomorphic (universal) webapp using react redux and hot reloading",
+  "main": "bin/server.js",
+  "scripts": {
+    "dev": "concurrent --kill-others \"npm run watch-client\" \"npm run start-dev\" \"npm run start-dev-api\"",
+    "watch-client": "better-npm-run watch-client",
+    "start-dev": "better-npm-run start-dev",
+    "start-dev-api": "better-npm-run start-dev-api"
+  },
+  "betterScripts": {
+    "watch-client": {
+      "command": "node webpack/webpack-dev-server.js",
+      "env": {
+        "UV_THREADPOOL_SIZE": 100,
+        "NODE_PATH": "./src"
+      }
+    },
+    "start-dev": {
+      "command": "node ./bin/server.js",
+      "env": {
+        "NODE_PATH": "./src",
+        "NODE_ENV": "development",
+        "PORT": 3000,
+        "APIPORT": 3030
+      }
+    },
+    "start-dev-api": {
+      "command": "node ./bin/api.js",
+      "env": {
+        "NODE_PATH": "./api",
+        "NODE_ENV": "development",
+        "APIPORT": 3030
+      }
+    }
+  },
+  "keywords": [
+    "react",
+    "isomorphic",
+    "universal",
+    "webpack",
+    "express",
+    "hot reloading",
+    "react-hot-reloader",
+    "redux",
+    "starter",
+    "boilerplate",
+    "babel"
+  ],
+  "author": "Jesse",
+  "license": "MIT",
+  "devDependencies": {
+    "autoprefixer-loader": "^3.1.0",
+    "babel-core": "^5.8.34",
+    "babel-plugin-react-transform": "^2.0.0",
+    "babel-runtime": "^5.8.34",
+    "better-npm-run": "0.0.5",
+    "concurrently": "^1.0.0",
+    "eslint": "^1.10.3",
+    "eslint-loader": "^1.2.0",
+    "json-loader": "^0.5.4",
+    "node-sass": "^3.4.2",
+    "react-transform-catch-errors": "^1.0.1",
+    "react-transform-hmr": "^1.0.1",
+    "redbox-react": "^1.2.0",
+    "sass-loader": "^3.1.2",
+    "webpack": "^1.12.11",
+    "webpack-dev-middleware": "^1.4.0",
+    "webpack-hot-middleware": "^2.6.0"
+  },
+  "dependencies": {
+    "babel": "^5.8.34",
+    "babel-plugin-typecheck": "^3.6.1",
+    "compression": "^1.6.0",
+    "express": "^4.13.3",
+    "file-loader": "^0.8.5",
+    "http-proxy": "^1.12.0",
+    "less": "^2.5.3",
+    "less-loader": "^2.2.2",
+    "piping": "^0.3.0",
+    "pretty-error": "^2.0.0",
+    "query-string": "^3.0.0",
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6",
+    "react-redux": "^4.0.6",
+    "react-router": "^1.0.3",
+    "redux-router": "^1.0.0-beta7",
+    "serve-favicon": "^2.3.0",
+    "socket.io": "^1.4.4",
+    "url-loader": "^0.5.7",
+    "webpack-isomorphic-tools": "^2.2.24"
+  }
+}
