@@ -80,6 +80,7 @@
   "devDependencies": {
     "autoprefixer-loader": "^3.1.0",
     "babel-core": "^5.8.34",
+    "babel-loader": "^5.4.0",
     "babel-plugin-react-transform": "^2.0.0",
     "babel-runtime": "^5.8.34",
     "better-npm-run": "0.0.5",

@@ -24,10 +24,10 @@ import qs from 'query-string';
 const pretty = new PrettyError();
 const app = new Express();
 const server = new http.Server(app);
-// const proxy = httpProxy.createProxyServer({
-//   target: 'http://' + config.apiHost + ':' + config.apiPort,
-//   ws: true
-// });
+const proxy = httpProxy.createProxyServer({
+  target: 'http://' + config.apiHost + ':' + config.apiPort,
+  ws: true
+});
 
 app.use(compression());
 app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
@@ -40,7 +40,28 @@ app.use('/api', (req, res) => {
 });
 
 // added the error handling to avoid https://github.com/nodejitsu/node-http-proxy/issues/527
+proxy.on('error', (error, req, res) => {
+  let json;
+  if (error.code !== 'ECONNRESET') {
+    console.error('proxy error', error);
+  }
+  if (!res.headersSent) {
+    res.writeHead(500, {'content-type': 'application/json'});
+  }
 
+  json = {error: 'proxy_error', reason: error.message};
+  res.end(JSON.stringify(json));
+});
+
+app.use((req, res) => {
+  if (__DEVELOPMENT__) {
+    // Do not cache webpack stats: the script file would change since
+    // hot module replacement is enabled in the development env
+    webpackIsomorphicTools.refresh();
+  }
+
+  // const client = new ApiClient(req);
+});
 
 if (config.port) {
   if (config.isProduction) {
@@ -59,7 +80,3 @@ if (config.port) {
 } else {
   console.error('==>     ERROR: No PORT environment variable has been specified');
 }
-
-app.use('/', function (req, res) {
-  res.end('It works!');
-})

@@ -28,6 +28,8 @@ var babelLoaderQuery = Object.assign({}, babelrcObject, babelrcObjectDevelopment
 delete babelLoaderQuery.env;
 
 babelLoaderQuery.plugins = babelLoaderQuery.plugins || [];
+// 自定义的方式使用更多的插件，比如 .babelrc 里面定义的 react-transform-catch-errors 捕获错误,
+// 和 react-transform-hmr: enable hot reloading, 都是在这个里面定义的
 if (babelLoaderQuery.plugins.indexOf('react-transform') < 0) {
   babelLoaderQuery.plugins.push('react-transform');
 }
@@ -46,7 +48,10 @@ babelLoaderQuery.extra['react-transform'].transforms.push({
 });
 
 module.exports = {
+  // 选择一个开发工具进行调试。
   devtool: 'inline-source-map',
+  // context: The base directory (absolute path!) for resolving the entry option. 
+  // If output.pathinfo is set, the included pathinfo is shortened to this directory.
   context: path.resolve(__dirname, '..'),
   entry: {
     'main': [
@@ -57,9 +62,13 @@ module.exports = {
     ]
   },
   output: {
+    // The output directory as absolute path (required). [hash] webpack 自带
     path: assetsPath,
+    // filename 对应 entry
     filename: '[name]-[hash].js',
+    // chunkname 我的理解是未被列在entry中，却又需要被打包出来的文件命名配置。
     chunkFilename: '[name]-[chunkhash].js',
+    // 在 path 属性之前，比如调试或者 CDN 之类的域名
     publicPath: 'http://' + host + ':' + port + '/dist/'
   },
   module: {
@@ -78,6 +87,7 @@ module.exports = {
   },
   progress: true,
   resolve: {
+    // modulesDirectories 模块目录，决定 webpack 怎么查找文件
     modulesDirectories: [
       'src',
       'node_modules'
